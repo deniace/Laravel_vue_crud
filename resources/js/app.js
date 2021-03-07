@@ -36,6 +36,10 @@ const routes = [
         name:'edit',
         path:'/article/edit/:id',
         component: ArticleEdit
+    },{
+        name:'show',
+        path:'/article/show/:id',
+        component: ArticleShow
     }
 ];
 
