@@ -1,0 +1,96 @@
+<template>
+  <div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">edit article</div>
+          <div class="card-body">
+            <div class="alert alert-danger" v-if="errors.length">
+              <b>terdapat kesalahan dalam input data:</b>
+              <ul>
+                <li v-for="error in errors" :key="error">{{ error }}</li>
+              </ul>
+            </div>
+
+            <form @submit.prevent="updateArticle">
+              <div class="form-group">
+                <label htmlFor="title">Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  v-model="article.title"
+                />
+              </div>
+              <div class="form-group">
+                <label htmlFor="content">Content</label>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  id="content"
+                  v-model="article.content"
+                  rows="5"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <router-link :to="{ name: 'home' }" class="btn btn-secondary"
+                  >Kembali</router-link
+                >
+
+                <button class="btn btn-primary">Simpan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      article: {},
+      errors: [],
+      title: null,
+      content: null,
+    };
+  },
+  created() {
+    let uri = "/api/article/edit/${this.$route.params.id}";
+    this.axios.get(uri).then((response) => {
+      this.article = response.data;
+    });
+  },
+  methods: {
+    updateArticle(e) {
+      if (
+        this.$data.article.title != null &&
+        this.$data.article.content != null
+      ) {
+        this.$swal.fire({
+          title: "Success",
+          text: "Article success created",
+          icon: "success",
+          timer: 1000,
+        });
+        let uri = "/api/article/update/${this.$route.params.id}";
+        this.axios.put(uri, this.article).then((response) => {
+          this.$router.push({ name: "home" });
+        });
+        return true;
+      }
+
+      this.errors = [];
+      if (!this.title) {
+        this.errors.push("title wajid diisi");
+      }
+      if (!this.content) {
+        this.errors.push("content wajib di isi");
+      }
+
+      e.preventDefault();
+    },
+  },
+};
+</script>

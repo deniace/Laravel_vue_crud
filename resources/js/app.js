@@ -21,7 +21,6 @@ import ArticleIndex from './components/ArticleIndex.vue';
 import ArticleCreate from './components/ArticleCreate.vue';
 import ArticleShow from './components/ArticleShow';
 import ArticleEdit from './components/ArticleEdit';
-import { component } from 'vue/types/umd';
 
 const routes = [
     {
